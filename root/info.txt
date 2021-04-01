@@ -1,0 +1,2 @@
+This "root" folder should be loaded along side the kernel
+Think of root as the equivalent to '/' on Linux or 'C://' on Windows
