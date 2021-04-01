@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(llvm_asm)] //TODO(Able): Convert to asm macro instead
+#![feature(asm)]
 #![feature(custom_test_frameworks)]
 #![test_runner(aura_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
@@ -8,11 +9,6 @@ use core::env;
 use core::panic::PanicInfo;
 
 use aura_os::println;
-
-mod arch;
-
-// TODO(any): Make this architecture dependent
-use arch::x86_64::cpuid::{RequestType, _cpuid};
 
 const OS_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
