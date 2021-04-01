@@ -6,7 +6,7 @@
 
 use core::panic::PanicInfo;
 pub mod kdrivers;
-pub use kdrivers::{serial, vga_buffer};
+pub use kdrivers::{kvga::vga_g::hi, serial, vga_buffer};
 
 pub trait Testable {
     fn run(&self) -> ();

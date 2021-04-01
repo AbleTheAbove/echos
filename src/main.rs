@@ -8,9 +8,7 @@
 use core::env;
 use core::panic::PanicInfo;
 
-use aura_os::println;
-//mod kdrivers;
-//use kdrivers::kvga::vga_g::hi;
+use aura_os::{hi, println};
 const OS_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 #[cfg(debug_assertions)]
@@ -38,7 +36,7 @@ pub extern "C" fn _start() -> ! {
     println!("{}{}", banner, seperator);
 
     let kernel_state = KernelState { terminal: 0 };
-
+    hi();
     #[cfg(test)]
     test_main();
 
