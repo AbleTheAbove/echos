@@ -14,12 +14,15 @@ macro_rules! jump {
 
 fn draw() {
     let black = Color16::Black;
-
     let mode = Graphics640x480x16::new();
     mode.set_mode();
     mode.clear_screen(black);
-    mode.draw_character(0, 0, 'c', Color16::White);
-    for (offset, character) in "Hello World!".chars().enumerate() {
-        mode.draw_character(270 + offset * 8, 72, character, Color16::White)
+    draw_banner(mode);
+}
+
+fn draw_banner(mode: Graphics640x480x16) -> Graphics640x480x16 {
+    for (offset, character) in "AuraOS".chars().enumerate() {
+        mode.draw_character(32 + offset * 8, 8, character, Color16::White)
     }
+    mode
 }

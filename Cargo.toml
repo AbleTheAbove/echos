@@ -3,6 +3,7 @@ name = "aura_os"
 version = "0.1.0"
 authors = ["Able <abl3theabove@gmail.com>"]
 edition = "2018"
+
 [[test]]
 name = "should_panic"
 harness = false

@@ -4,7 +4,7 @@
 #![test_runner(aura_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use aura_os::println;
+use aura_os::logln;
 use core::panic::PanicInfo;
 
 #[no_mangle] // don't mangle the name of this function
@@ -20,6 +20,6 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 #[test_case]
-fn test_println() {
-    println!("test_println output");
+fn test_logln() {
+    logln!("test_logln output");
 }

@@ -8,7 +8,7 @@
 use core::env;
 use core::panic::PanicInfo;
 
-use aura_os::{hi, println};
+use aura_os::{hi, logln};
 const OS_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 #[cfg(debug_assertions)]
@@ -23,24 +23,19 @@ pub struct KernelState {
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    let seperator =
-        "================================================================================";
-    let banner = r#"
-             .d888888                              .88888.  .d88888b
-             d8'    88                             d8'   `8b 88.    "'
-             88aaaaa88a dP    dP 88d888b. .d8888b. 88     88 `Y88888b.
-             88     88  88    88 88'  `88 88'  `88 88     88       `8b
-             88     88  88.  .88 88       88.  .88 Y8.   .8P d8'   .8P
-             88     88  `88888P' dP       `88888P8  `8888P'   Y88888P
-"#;
-    println!("{}{}", banner, seperator);
-
+    aura_os::init(); // NOTE(Able): Initialize the interrupt table
     let kernel_state = KernelState { terminal: 0 };
-    hi();
     #[cfg(test)]
     test_main();
 
-    println!("Version: {} {}\n{}", OS_VERSION, BUILD_PROFILE, seperator);
+    term0_draw();
+
+    match kernel_state.terminal {
+        0 => {}
+        1 => hi(),
+        _ => {}
+    }
+
     loop {}
 }
 
@@ -48,7 +43,7 @@ pub extern "C" fn _start() -> ! {
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
+    logln!("{}", info);
     loop {}
 }
 
@@ -61,4 +56,19 @@ fn panic(info: &PanicInfo) -> ! {
 #[test_case]
 fn trivial_assertion() {
     assert_eq!(1, 1);
+}
+
+fn term0_draw() {
+    let seperator =
+        "================================================================================";
+    let banner = r#"
+             .d888888                              .88888.  .d88888b
+             d8'    88                             d8'   `8b 88.    "'
+             88aaaaa88a dP    dP 88d888b. .d8888b. 88     88 `Y88888b.
+             88     88  88    88 88'  `88 88'  `88 88     88       `8b
+             88     88  88.  .88 88       88.  .88 Y8.   .8P d8'   .8P
+             88     88  `88888P' dP       `88888P8  `8888P'   Y88888P
+"#;
+    logln!("{}{}", banner, seperator);
+    logln!("Version: {} {}\n{}", OS_VERSION, BUILD_PROFILE, seperator);
 }
