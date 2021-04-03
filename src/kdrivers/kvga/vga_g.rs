@@ -14,11 +14,12 @@ macro_rules! jump {
 
 fn draw() {
     let black = Color16::Black;
-    let mode = Graphics640x480x16::new();
+    let mut mode = Graphics640x480x16::new();
     mode.set_mode();
     mode.clear_screen(black);
-    mode.draw_line((90, 90), (90, 400), Color16::White);
-    draw_banner(mode);
+
+    mode.draw_line((0, 0), (700000, 0), Color16::Red);
+    mode = draw_banner(mode);
 }
 
 fn draw_banner(mode: Graphics640x480x16) -> Graphics640x480x16 {
