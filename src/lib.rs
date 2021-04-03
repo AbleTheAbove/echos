@@ -8,7 +8,7 @@
 use core::panic::PanicInfo;
 pub mod interrupts;
 pub mod kdrivers;
-pub use kdrivers::{kvga::vga_g::hi, serial, vga_buffer};
+pub use kdrivers::{kvga::vga_g::draw, serial, vga_buffer};
 
 pub fn init() {
     interrupts::init_idt();

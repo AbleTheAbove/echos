@@ -5,17 +5,16 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(aura_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+use aura_os::{draw, logln};
 use core::env;
 use core::panic::PanicInfo;
-
-use aura_os::{hi, logln};
-const OS_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const OS_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[cfg(debug_assertions)]
-const BUILD_PROFILE: &'static str = "debug";
+const BUILD_PROFILE: &str = "debug";
 
 #[cfg(not(debug_assertions))]
-const BUILD_PROFILE: &'static str = "release";
+const BUILD_PROFILE: &str = "release";
 
 pub struct KernelState {
     pub terminal: u8,
@@ -32,14 +31,16 @@ pub extern "C" fn _start() -> ! {
 
     match kernel_state.terminal {
         0 => {}
-        1 => hi(),
+        1 => draw(),
         _ => {}
     }
 
-    loop {}
+    loop {
+        x86_64::instructions::hlt();
+    }
 }
 
-/// This function is called on panic.
+/// Tdraws function is called on panic.
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
