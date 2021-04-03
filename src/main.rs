@@ -24,7 +24,7 @@ pub struct KernelState {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     aura_os::init(); // NOTE(Able): Initialize the interrupt table
-    let kernel_state = KernelState { terminal: 0 };
+    let kernel_state = KernelState { terminal: 1 };
     #[cfg(test)]
     test_main();
 

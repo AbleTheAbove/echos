@@ -17,6 +17,7 @@ fn draw() {
     let mode = Graphics640x480x16::new();
     mode.set_mode();
     mode.clear_screen(black);
+    mode.draw_line((90, 90), (90, 400), Color16::White);
     draw_banner(mode);
 }
 
