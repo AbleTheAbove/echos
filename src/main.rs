@@ -20,16 +20,24 @@ pub struct KernelState {
     pub terminal: u8,
 }
 
+// TODO(Able): Move to the klib
+use lazy_static::lazy_static;
+use spin::Mutex;
+lazy_static! {
+    pub static ref KERNELSTATE: Mutex<KernelState> = Mutex::new(KernelState { terminal: 1 });
+}
+// ENDTODO
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     aura_os::init(); // NOTE(Able): Initialize the interrupt table
-    let kernel_state = KernelState { terminal: 1 };
+
+    KERNELSTATE.lock().terminal = 1;
     #[cfg(test)]
     test_main();
 
     term0_draw();
 
-    match kernel_state.terminal {
+    match KERNELSTATE.lock().terminal {
         0 => {}
         1 => draw(),
         _ => {}

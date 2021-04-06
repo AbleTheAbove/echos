@@ -2,7 +2,7 @@ pub use vga::colors::Color16;
 pub use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
 pub fn draw() {
-    let mut mode = Graphics640x480x16::new();
+    let mode = Graphics640x480x16::new();
     mode.set_mode();
     mode.clear_screen(Color16::Black);
 
