@@ -30,7 +30,7 @@ lazy_static! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     aura_os::init(); // NOTE(Able): Initialize the interrupt table
-    KERNELSTATE.lock().terminal = 1;
+    KERNELSTATE.lock().terminal = 0;
 
     #[cfg(test)]
     test_main();

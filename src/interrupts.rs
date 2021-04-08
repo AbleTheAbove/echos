@@ -1,9 +1,7 @@
+use crate::gdt;
+use crate::logln;
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
-
-use crate::gdt;
-use pic8259_simple::ChainedPics;
-use spin;
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
@@ -13,7 +11,6 @@ lazy_static! {
             idt.double_fault.set_handler_fn(double_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX); // new
         }
-
         idt
     };
 }
@@ -23,7 +20,7 @@ pub fn init_idt() {
 }
 
 extern "x86-interrupt" fn breakpoint_handler(stack_frame: &mut InterruptStackFrame) {
-    panic!("EXCEPTION: BREAKPOINT\n{:#?}", stack_frame);
+    logln!("EXCEPTION: BREAKPOINT\n{:#?}", stack_frame);
 }
 
 extern "x86-interrupt" fn double_fault_handler(
