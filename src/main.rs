@@ -6,8 +6,7 @@
 #![test_runner(aura_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 use aura_os::{draw, logln};
-use core::env;
-use core::panic::PanicInfo;
+use core::{env, panic::PanicInfo};
 const OS_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[cfg(debug_assertions)]
@@ -16,16 +15,9 @@ const BUILD_PROFILE: &str = "debug";
 #[cfg(not(debug_assertions))]
 const BUILD_PROFILE: &str = "release";
 
-pub struct KernelState {
-    pub terminal: u8,
-}
-
 // TODO(Able): Move to the klib
-use lazy_static::lazy_static;
-use spin::Mutex;
-lazy_static! {
-    pub static ref KERNELSTATE: Mutex<KernelState> = Mutex::new(KernelState { terminal: 1 });
-}
+pub mod kernel_state;
+pub use kernel_state::KERNELSTATE;
 // ENDTODO
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -35,7 +27,14 @@ pub extern "C" fn _start() -> ! {
     #[cfg(test)]
     test_main();
 
+    fn stack_overflow() {
+        stack_overflow(); // for each recursion, the return address is pushed
+    }
+    // FIX(Able): Properly handle stack overflow
+    // uncomment line below to trigger a stack overflow
+    //    stack_overflow();
     term0_draw();
+
     match KERNELSTATE.lock().terminal {
         0 => {}
         1 => draw(),
@@ -47,7 +46,6 @@ pub extern "C" fn _start() -> ! {
     }
 }
 
-/// Tdraws function is called on panic.
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
