@@ -2,7 +2,7 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
-use aura_os::{exit_qemu, serial_print, serial_println, QemuExitCode};
+use echos::{exit_qemu, serial_print, serial_println, QemuExitCode};
 use core::panic::PanicInfo;
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
@@ -11,7 +11,7 @@ use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 pub extern "C" fn _start() -> ! {
     serial_print!("stack_overflow::stack_overflow...\t");
 
-    aura_os::gdt::init();
+    echos::gdt::init();
     init_test_idt();
 
     // trigger a stack overflow
@@ -32,7 +32,7 @@ lazy_static! {
         unsafe {
             idt.double_fault
                 .set_handler_fn(test_double_fault_handler)
-                .set_stack_index(aura_os::gdt::DOUBLE_FAULT_IST_INDEX);
+                .set_stack_index(echos::gdt::DOUBLE_FAULT_IST_INDEX);
         }
 
         idt
@@ -54,5 +54,5 @@ extern "x86-interrupt" fn test_double_fault_handler(
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    aura_os::test_panic_handler(info)
+    echos::test_panic_handler(info)
 }
