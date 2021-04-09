@@ -13,10 +13,9 @@ const BUILD_PROFILE: &str = "debug";
 #[cfg(not(debug_assertions))]
 const BUILD_PROFILE: &str = "release";
 
-// TODO(Able): Move to the klib
 pub mod kernel_state;
 pub use kernel_state::KERNELSTATE;
-// ENDTODO
+
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     echos::init(); // NOTE(Able): Initialize the interrupt table
