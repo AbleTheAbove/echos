@@ -4,13 +4,14 @@
 #![feature(abi_x86_interrupt)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
-
 use core::panic::PanicInfo;
 
+pub mod gdt;
 pub mod interrupts;
 pub mod kdrivers;
-pub use kdrivers::{kvga::vga_g::draw, serial, vga_buffer};
-pub mod gdt;
+
+pub use kdrivers::{serial, vga::vga_buffer, vga::vga_g::draw};
+
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
