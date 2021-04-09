@@ -1,0 +1,1 @@
+Assume this is where the seash binary would stay on a full system
