@@ -1,7 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(llvm_asm)] //TODO(Able): Convert to asm macro instead
-#![feature(asm)]
 #![feature(custom_test_frameworks)]
 #![test_runner(echos::test_runner)]
 #![reexport_test_harness_main = "test_main"]
